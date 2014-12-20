@@ -138,7 +138,8 @@ class SQL(Table):
             for name, resource in self.tables.items():
                 schema = self.__get_schema(name, resource)
 
-                path = os.path.join(resource_path, str(uuid.uuid4()))
+                resource_id = str(uuid.uuid4())
+                path = os.path.join(resource_path, resource_id)
                 with open(path, 'w') as f:
                     json.dump(resource.to_json(), f)
                 
@@ -147,7 +148,7 @@ class SQL(Table):
                 #if not postgres_running_in_user_account:
                 #    os.chmod(f.name, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
-                cur.execute(self.__add_table_stmt(name, schema, dict(path=path)))
+                cur.execute(self.__add_table_stmt(name, schema, dict(resource_id=resource_id)))
 
     def _get_iterator(self):
         with self.__conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
