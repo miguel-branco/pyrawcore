@@ -34,13 +34,18 @@
 import collections
 import json
 import os
-import tempfile
 import uuid
 
 import pandas
 import psycopg2
 import psycopg2.extras
 from ..core import get_option, load, Table, is_table
+
+
+resource_path = get_option('sql', 'resource_path')
+if not resource_path:
+    import tempfile
+    resource_path = os.path.realpath(tempfile.gettempdir())
 
 
 class SQL(Table):
@@ -133,7 +138,7 @@ class SQL(Table):
             for name, resource in self.tables.items():
                 schema = self.__get_schema(name, resource)
 
-                path = os.path.join(os.path.realpath(tempfile.gettempdir()), str(uuid.uuid4()))
+                path = os.path.join(resource_path, str(uuid.uuid4()))
                 with open(path, 'w') as f:
                     json.dump(resource.to_json(), f)
                 
