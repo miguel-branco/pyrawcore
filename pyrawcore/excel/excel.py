@@ -84,7 +84,7 @@ class Excel(Table):
                 return self.__get_slice(key)
             raise ValueError('key is not an int, long or slice')    
 
-    def __init__(self, path, args, columns_added=None, columns_hidden=None, rev=None):
+    def __init__(self, path, args, columns_added=[], columns_hidden=[]):
         super(Excel, self).__init__(columns_added=columns_added, columns_hidden=columns_hidden)
         # TODO: Validate path, args, ...
         self.path = path
