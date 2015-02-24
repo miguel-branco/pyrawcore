@@ -84,7 +84,7 @@ class SQL(Table):
     def from_json(payload):
         return SQL(
             payload['sql'],
-            {table_name: load(table_json) for table_name, table_json in self.tables.items()},
+            {table_name: load(table_json) for table_name, table_json in payload['tables'].items()},
             columns_added=Table._decode_columns_added(payload),
             columns_hidden=Table._decode_columns_hidden(payload))
 
