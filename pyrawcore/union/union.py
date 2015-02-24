@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-from ..core import get_option, load
+from ..core import get_option, load, Table
 
 
 class Union(Table):
@@ -57,7 +57,20 @@ class Union(Table):
         raise NotImplementedError('_get_keys')
 
     def _get_key(self, key):
-        raise NotImplementedError('_get_key')
+        if key < 0:
+            raise NotImplementedError('index backward not support')
+
+        result = None
+        cur_key = 0
+        for table in self.tables:
+            for row in table:
+                result = row
+                if cur_key == key:
+                    return result
+                else:
+                    cur_key += 1
+
+        raise IndexError('index out of range')
 
     def _get_slice(self, slice):
         raise NotImplementedError('_get_slice')
